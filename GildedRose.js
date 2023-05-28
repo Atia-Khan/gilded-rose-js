@@ -61,6 +61,8 @@ class Item {
     this.quality = quality;
     this.daysRemaining = daysRemaining;
   }
+  constructor(){}
+  
 
   updateQuality() {
     if (this.quality > 0) {
@@ -107,6 +109,22 @@ class BackstagePassItem extends Item {
   }
 }
 
+class ConjuredItem extends Item {
+  updateQuality() {
+    if (this.quality > 0) {
+      this.quality -= 2; // Decrease quality by 2 for Conjured items
+    }
+    this.daysRemaining -= 1;
+
+    if (this.daysRemaining < 0) {
+      if (this.quality > 0) {
+        this.quality -= 2; // Decrease quality by 2 for Conjured items after sell date
+      }
+    }
+    this.quality = Math.max(0, this.quality);
+  }
+}
+
 class SulfurasItem extends Item {
   updateQuality() {
     // Sulfuras never decreases in quality or has to be sold
@@ -119,18 +137,25 @@ const items = [
   new AgedBrieItem("Aged Brie", 20, 2),
   new BackstagePassItem("Backstage Pass", 30, 10),
   new SulfurasItem("Sulfuras, Hand of Ragnaros", 40, 0),
+  new ConjuredItem('Conjured Sword', 10, 5),
 ];
 
 function updateInventory(items) {
   for (const item of items) {
     item.tick();
   }
+
+
+  
 }
+module.exports = Item;
 
 module.exports = {
   Item,
   AgedBrieItem,
   BackstagePassItem,
   SulfurasItem,
-  updateInventory
+  updateInventory,
+  ConjuredItem
+
 };

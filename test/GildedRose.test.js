@@ -176,13 +176,16 @@
 
 
 const expect = require('chai').expect;
+
+const ConjuredItem = require('../ConjuredItem.js');
 const sinon = require("sinon");
 const {
   Item,
   AgedBrieItem,
   BackstagePassItem,
   SulfurasItem,
-  updateInventory
+  updateInventory,
+
 } = require('../GildedRose.js');
 
 describe('Item', function () {
@@ -349,4 +352,110 @@ describe('updateInventory', function () {
 
     tickSpy.restore();
   });
+
+//   describe('Conjured Item', () => {
+//     it('degrades faster than normal', () => {
+//         const item = new Item('Conjured Item', 10, 5);
+//         item.tick();
+
+//         expect(item.quality).to.equal(8);
+//         expect(item.daysRemaining).to.equal(4);
+//     })
+
+//     it('can not go below 0 quality', () => {
+//         const item = new Item('Conjured Item', 1, 1);
+//         item.tick();
+
+//         expect(item.quality).to.equal(0);
+//         expect(item.daysRemaining).to.equal(0);
+//     })
+
+//     it('degrades faster on sell date', () => {
+//         const item = new Item('Conjured Item', 10, 0);
+//         item.tick();
+
+//         expect(item.quality).to.equal(6);
+//         expect(item.daysRemaining).to.equal(-1);
+//     })
+
+//     it('can not go below 0 quality even on sell date', () => {
+//         const item = new Item('Conjured Item', 0, 0);
+//         item.tick();
+
+//         expect(item.quality).to.equal(0);
+//         expect(item.daysRemaining).to.equal(-1);
+//     })
+
+//     it('it degrades even faster after sell date', () => {
+//         const item = new Item('Conjured Item', 10, -1);
+//         item.tick();
+
+//         expect(item.quality).to.equal(6);
+//         expect(item.daysRemaining).to.equal(-2);
+//     })
+
+//     it('can not go below 0 quality even after sell date', () => {
+//         const item = new Item('Conjured Item', 0, -1);
+//         item.tick();
+
+//         expect(item.quality).to.equal(0);
+//         expect(item.daysRemaining).to.equal(-2);
+//     })
+// })
+
+
+
+describe('ConjuredItem', function () {
+  describe('updateQuality', function () {
+    it('should decrease quality by 2 when quality is greater than 0', function () {
+      const item = new ConjuredItem('Conjured Sword', 10, 5);
+      item.updateQuality();
+
+      expect(item.quality).to.equal(8);
+    });
+
+    it('should not decrease quality when quality is 0', function () {
+      const item = new ConjuredItem('Conjured Sword', 0, 5);
+      item.updateQuality();
+
+      expect(item.quality).to.equal(0);
+    });
+
+    it('should decrease quality by 2 when daysRemaining is 0 and quality is greater than 0', function () {
+      const item = new ConjuredItem('Conjured Sword', 10, 0);
+      item.updateQuality();
+
+      expect(item.quality).to.equal(8);
+    });
+
+    it('should not decrease quality when daysRemaining is 0 and quality is 0', function () {
+      const item = new ConjuredItem('Conjured Sword', 0, 0);
+      item.updateQuality();
+
+      expect(item.quality).to.equal(0);
+    });
+
+    it('should decrease quality by 2 when daysRemaining is negative and quality is greater than 0', function () {
+      const item = new ConjuredItem('Conjured Sword', 10, -1);
+      item.updateQuality();
+
+      expect(item.quality).to.equal(8);
+    });
+
+    it('should not decrease quality when daysRemaining is negative and quality is 0', function () {
+      const item = new ConjuredItem('Conjured Sword', 0, -1);
+      item.updateQuality();
+
+      expect(item.quality).to.equal(0);
+    });
+
+    it('should not go below 0 quality', function () {
+      const item = new ConjuredItem('Conjured Sword', 1, 5);
+      item.updateQuality();
+
+      expect(item.quality).to.equal(0);
+    });
+  });
+});
+
 });
