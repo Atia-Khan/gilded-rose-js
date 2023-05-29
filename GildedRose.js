@@ -1,14 +1,9 @@
-
-
-
 class Item {
   constructor(name, quality, daysRemaining) {
     this.name = name;
     this.quality = quality;
     this.daysRemaining = daysRemaining;
   }
-  
-  
 
   updateQuality() {
     if (this.quality > 0) {
@@ -58,13 +53,13 @@ class BackstagePassItem extends Item {
 class ConjuredItem extends Item {
   updateQuality() {
     if (this.quality > 0) {
-      this.quality -= 2; // Decrease quality by 2 for Conjured items
+      this.quality -= 2;
     }
     this.daysRemaining -= 1;
 
     if (this.daysRemaining == 0) {
       if (this.quality > 0) {
-        this.quality -= 2; // Decrease quality by 2 for Conjured items after sell date
+        this.quality -= 2;
       }
     }
     this.quality = Math.max(0, this.quality);
@@ -77,24 +72,18 @@ class SulfurasItem extends Item {
   }
 }
 
-// Usage example:
 const items = [
   new Item("Normal Item", 10, 5),
   new AgedBrieItem("Aged Brie", 20, 2),
   new BackstagePassItem("Backstage Pass", 30, 10),
   new SulfurasItem("Sulfuras, Hand of Ragnaros", 40, 0),
-  // new ConjuredItem('Conjured Sword', 10, 5),
 ];
 
 function updateInventory(items) {
   for (const item of items) {
     item.tick();
   }
-
-
-  
 }
-
 
 module.exports = {
   Item,
@@ -102,6 +91,5 @@ module.exports = {
   BackstagePassItem,
   SulfurasItem,
   updateInventory,
-  ConjuredItem
-
+  ConjuredItem,
 };
